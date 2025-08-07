@@ -1,25 +1,140 @@
-<h3 align="center"><img src="https://i.imgur.com/ZQI2EYz.png" alt="logo" height="100px"></h3>
-<p align="center">A command-line system information tool written in bash 3.2+</p>
+# 🖥️ Terminal Setup with Neofetch and Custom Size
 
-<p align="center">
-<a href="./LICENSE.md"><img src="https://img.shields.io/badge/license-MIT-blue.svg"></a>
-<a href="https://github.com/dylanaraps/neofetch/releases"><img src="https://img.shields.io/github/release/dylanaraps/neofetch.svg"></a>
-<a href="https://repology.org/metapackage/neofetch"><img src="https://repology.org/badge/tiny-repos/neofetch.svg" alt="Packaging status"></a>
-</p>
+This guide documents how to install and configure [Neofetch](https://github.com/dylanaraps/neofetch) to launch automatically when opening the terminal, as well as how to customize the default terminal window size for both **GNOME Terminal** and **Terminator**.
 
-<img src="https://i.imgur.com/GFmC5Ad.png" alt="neofetch" align="right" height="240px">
+---
 
-Neofetch is a command-line system information tool written in `bash 3.2+`. Neofetch displays information about your operating system, software and hardware in an aesthetic and visually pleasing way.
+## 📦 Installation
 
-The overall purpose of Neofetch is to be used in screen-shots of your system. Neofetch shows the information other people want to see. There are other tools available for proper system statistic/diagnostics.
+1. **Clone the Neofetch repository and navigate into it:**
 
-The information by default is displayed alongside your operating system's logo. You can further configure Neofetch to instead use an image, a custom ASCII file, your wallpaper or nothing at all.
+   ```bash
+   git clone https://github.com/RoBorregos/neofetch.git
+   cd neofetch
+   ```
 
-<img src="https://i.imgur.com/lUrkQBN.png" alt="neofetch" align="right" height="240px">
+2. **Install it globally:**
 
-You can further configure Neofetch to display exactly what you want it to. Through the use of command-line flags and the configuration file you can change existing information outputs or add your own custom ones.
+   ```bash
+   sudo make install
+   ```
 
-Neofetch supports almost 150 different operating systems. From Linux to Windows, all the way to more obscure operating systems like Minix, AIX and Haiku. If your favourite operating system is unsupported: Open up an issue and support will be added.
+---
 
+## 🚀 Auto-run Neofetch on Terminal Launch
 
-### More: \[[Dependencies](https://github.com/dylanaraps/neofetch/wiki/Dependencies)\] \[[Installation](https://github.com/dylanaraps/neofetch/wiki/Installation)\] \[[Wiki](https://github.com/dylanaraps/neofetch/wiki)\]
+### If using Bash:
+1. Add `neofetch` at the end of your `~/.bashrc`:
+
+   ```bash
+   nano ~/.bashrc
+   ```
+
+2. Add this line at the bottom:
+
+   ```bash
+   neofetch
+   ```
+
+3. Then apply the changes:
+
+   ```bash
+   source ~/.bashrc
+   ```
+
+### If using Zsh:
+1. Add `neofetch` at the end of your `~/.zshrc`:
+
+   ```bash
+   nano ~/.zshrc
+   ```
+
+2. Add this line at the bottom:
+
+   ```bash
+   neofetch
+   ```
+
+3. Then apply the changes:
+
+   ```bash
+   source ~/.zshrc
+   ```
+
+---
+
+## 🖼️ Preview
+*(Insert your screenshot here)*
+
+---
+
+## 🧱 Set Default Terminal Size
+
+### 🧩 For GNOME Terminal
+
+1. **Copy the desktop entry:**
+
+   ```bash
+   cp /usr/share/applications/org.gnome.Terminal.desktop ~/.local/share/applications/gnome-terminal.desktop
+   ```
+
+2. **Edit the copied file:**
+
+   ```bash
+   nano ~/.local/share/applications/gnome-terminal.desktop
+   ```
+
+3. **Modify the Exec line to set default size (e.g. 112x32):**
+
+   ```ini
+   Exec=gnome-terminal --geometry=112x32
+   ```
+
+4. **Optional: Update the desktop entry database:**
+
+   ```bash
+   update-desktop-database ~/.local/share/applications/
+   ```
+
+### 🧱 For Terminator
+
+1. **Create the configuration directory if it doesn't exist:**
+
+   ```bash
+   mkdir -p ~/.config/terminator
+   ```
+
+2. **Create and edit the config file:**
+
+   ```bash
+   nano ~/.config/terminator/config
+   ```
+
+3. **Paste the following:**
+
+   ```ini
+   [global_config]
+     enabled_plugins = 
+
+   [keybindings]
+
+   [profiles]
+     [[default]]
+       default_size = 112, 32
+       scrollback_infinite = True
+
+   [layouts]
+     [[default]]
+       [[[child1]]]
+         type = Terminal
+         parent = window0
+       [[[window0]]]
+         type = Window
+         parent = ""
+
+   [plugins]
+   ```
+
+4. **Save and close.** Then reopen Terminator — it will now launch with the specified size.
+
+---
